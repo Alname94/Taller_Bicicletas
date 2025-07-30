@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Presupuesto</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Editar Presupuesto &#128221;</h1>
+        <div class="container-edit">
+        <p><a th:href="@{/}" class="button back">Volver al Listado de Presupuestos</a></p>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <form th:action="@{/presupuesto/actualizar}" th:object="${presupuesto}" method="post" id="formPresupuesto">
+            <input type="hidden" th:field="*{numero}" />
+            <div>
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" th:field="*{fecha}" required>
+            </div>
+            <div>
+                <label for="clienteId">Cliente:</label>
+                <input id="clienteId" type="text" th:value="|${cliente.id} - ${cliente.nombre} ${cliente.apellido}|" readonly="readonly" />
+            </div>
+            <div>
+                <label for="bicicletaId">Bicicleta:</label>
+                <input id="bicicletaId" type="text" th:value="|${bicicleta.id} - ${bicicleta.marca} ${bicicleta.modelo} - ${bicicleta.color}|" readonly="readonly" />
+            </div>
+            <div>
+                <label for="valorTotal">Valor Total:</label>
+                <input type="number" id="valorTotal" th:field="*{valorTotal}" required>
+            </div>
+            <div>
+                <label for="detalle">Detalle:</label>
+                <input type="text" id="detalle" th:field="*{detalle}" maxlength="300">
+            </div>
+            <button type="submit" class="button">Actualizar presupuesto</button>
+        </form>
+        </div>
+
+        <h2>Repuestos Agregados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Marca</th>
+                    <th>Color</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r, stat : ${repuestosAgregados}">
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${r.codigo}"></td>
+                    <td th:text="${r.producto}"></td>
+                    <td th:text="${r.marca}"></td>
+                    <td th:text="${r.color}"></td>
+                    <td th:text="${r.cantidadAgregada}"></td>
+                    <td>
+                        <form th:action="@{/presupuesto/eliminarRepuesto}" method="get">
+                            <input type="hidden" name="numero" th:value="${presupuesto.getNumero()}" />
+                            <input type="hidden" name="repuestoCodigo" th:value="${r.codigo}" />
+                            <input type="hidden" name="cantidadAgregada" th:value="${r.cantidadAgregada}" />
+                            <button type="submit" class="button delete">Quitar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Repuestos Disponibles</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Producto</th>
+                    <th>Marca</th>
+                    <th>Color</th>
+                    <th>Precio Venta</th>
+                    <th>Precio Costo</th>
+                    <th>Stock</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="repuesto : ${repuestos}">
+                    <td th:text="${repuesto.codigo}"></td>
+                    <td th:text="${repuesto.producto}"></td>
+                    <td th:text="${repuesto.marca}"></td>
+                    <td th:text="${repuesto.color}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(repuesto.precioVenta, 2, 2)}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(repuesto.precioCosto, 2, 2)}"></td>
+                    <td th:text="${repuesto.stock}"></td>
+                    <td>
+                        <form th:action="@{/presupuesto/agregarRepuesto}" method="post">
+                            <input type="number" name="cantidadAgregada" min="1" th:attr="max=${repuesto.stock}" value="1" required />
+                    </td>
+                    <td>
+                        <form th:action="@{/presupuesto/agregarRepuesto}" method="post">
+                            <input type="hidden" name="origen" value="editar" />
+                            <input type="hidden" name="presupuestoNumero" th:value="${presupuesto.numero}" />
+                            <input type="hidden" name="repuestoCodigo" th:value="${repuesto.codigo}" />
+                            <input type="hidden" name="cantidadAgregada" th:value="${cantidadAgregada}" />
+                            <button type="submit" class="button edit">Agregar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</body>
+</html>

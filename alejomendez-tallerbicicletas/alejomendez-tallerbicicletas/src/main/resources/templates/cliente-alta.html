@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alta de Cliente</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container-edit">
+        <h1>Alta de Nuevo Cliente</h1>
+        <p><a th:href="@{/clientes}" class="button back">Volver al Listado de Clientes</a></p>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <form th:action="@{/cliente/guardar}" th:object="${cliente}" method="post">
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" maxlength="50" th:field="*{nombre}" required>
+            </div>
+            <div>
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" maxlength="50" th:field="*{apellido}" required>
+            </div>
+            <div>
+                <label for="dni">Dni:</label>
+                <input type="text" pattern="\d{8}" maxlength="8" inputmode="numeric" id="dni" th:field="*{dni}" required>
+            </div>
+            <div>
+                <label for="telefono">Telefono:</label>
+                <input type="tel" id="telefono" minlength="10" maxlength="10" th:field="*{telefono}" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" pattern="^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$" maxlength="50" th:field="*{email}">
+            </div>
+            <button type="submit" class="button">Guardar Cliente</button>
+        </form>
+    </div>
+</body>
+</html>

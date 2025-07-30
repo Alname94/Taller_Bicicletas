@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller de Bicicletas</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <header class="navbar">
+            <nav class="navbar-container">
+                <ul class="navbar-menu">
+                    <p><a th:href="@{/clientes}" class="button">Clientes</a> <a th:href="@{/bicicletas}"
+                            class="button">Bicicletas</a> <a th:href="@{/repuestos}" class="button">Repuestos</a></p>
+                </ul>
+            </nav>
+        </header>
+        <h1>Listado de Presupuestos &#128203;</h1>
+
+        <p><a th:href="@{/presupuesto/alta}" class="button">&#10133; Nuevo Presupuesto </a> <a th:href="@{/}" class="button">Todos los Presupuestos</a></p>
+
+        <form th:action="@{/presupuestos/buscar}" method="get">
+            <label for="parametro">Buscar Presupuesto:</label>
+            <td>
+                <input type="text" class="search-input" id="parametro" name="parametro" placeholder="Número, nombre cliente o marca bicicleta" required>
+            </td>
+            <button type="submit" class="search-button">Buscar</button>
+        </form>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Numero</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Bicicleta</th>
+                    <th>Valor</th>
+                    <th>Detalle</th>
+                    <th>Editar / Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="presupuesto : ${presupuestos}">
+                    <td th:text="${presupuesto.numero}"></td>
+                    <td class="nowrap" th:text="${presupuesto.fecha}"></td>
+                    <td th:text="${presupuesto.clienteId}"></td>
+                    <td th:text="${presupuesto.bicicletaId}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(presupuesto.valorTotal, 2, 2)}"></td>
+                    <td th:text="${presupuesto.detalle}"></td>
+                    <td>
+                        <a th:href="@{/presupuesto/editar(numero=${presupuesto.numero}, clienteId=${presupuesto.clienteId})}"
+                            class="button edit">&#128221;</a>
+                        <a th:href="@{/presupuesto/eliminar(numero=${presupuesto.numero})}" class="button delete"
+                            onclick="return confirm('¿Estás seguro de que quieres eliminar este presupuesto?');">&#10060;</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

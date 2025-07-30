@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Repuestos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <header class="navbar">
+            <nav class="navbar-container">
+                <ul class="navbar-menu">
+                    <p> <a th:href="@{/}" class="button">Presupuestos</a><a th:href="@{/clientes}" class="button">Clientes</a> 
+                        <a th:href="@{/bicicletas}" class="button">Bicicletas</a></p>
+                </ul>
+            </nav>
+        </header>
+        <h1>Listado de Repuestos &#128295;</h1>
+
+        <p><a th:href="@{/repuesto/alta}" class="button">&#10133; Nuevo Repuesto</a> <a th:href="@{/repuestos}" class="button">Todos los Repuestos</a></p>
+
+        <form th:action="@{/repuestos/buscar}" method="get">
+            <label for="parametro">Buscar Repuesto:</label>
+            <td>
+                <input type="text" class="search-input" id="parametro" name="parametro" placeholder="Código, producto o marca" required>
+            </td>
+            <button type="submit" class="search-button">Buscar</button>
+        </form>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Producto</th>
+                    <th>Marca</th>
+                    <th>Color</th>
+                    <th>Precio Venta</th>
+                    <th>Precio Costo</th>
+                    <th>Stock</th>
+                    <th>Editar / Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="repuesto : ${repuestos}">
+                    <td th:text="${repuesto.codigo}"></td>
+                    <td th:text="${repuesto.producto}"></td>
+                    <td th:text="${repuesto.marca}"></td>
+                    <td th:text="${repuesto.color}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(repuesto.precioVenta, 2, 2)}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(repuesto.precioCosto, 2, 2)}"></td>
+                    <td th:text="${repuesto.stock}"></td>
+                    <td>
+                        <a th:href="@{/repuesto/editar(codigo=${repuesto.codigo})}" class="button edit">&#128221;</a>
+                        <a th:href="@{/repuesto/eliminar(codigo=${repuesto.codigo})}" class="button delete"
+                            onclick="return confirm('¿Estás seguro de que quieres eliminar este repuesto?');">&#10060;</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

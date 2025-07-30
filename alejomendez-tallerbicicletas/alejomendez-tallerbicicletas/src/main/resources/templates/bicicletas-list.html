@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Bicicletas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <header class="navbar">
+            <nav class="navbar-container">
+                <ul class="navbar-menu">
+                    <p><a th:href="@{/}" class="button">Presupuestos</a><a th:href="@{/clientes}" class="button">Clientes</a>
+                        <a th:href="@{/repuestos}" class="button">Repuestos</a></p>
+                </ul>
+            </nav>
+        </header>
+        <h1>Listado de Bicicletas &#128690;</h1>
+
+        <p><a th:href="@{/bicicleta/alta}" class="button">&#10133; Nueva Bicicleta</a><a th:href="@{/bicicletas}" class="button">Todas las Bicicletas</a></p>
+
+        <form th:action="@{/bicicletas/buscar}" method="get">
+            <label for="parametro">Buscar Bicicleta:</label>
+            <td>
+                <input type="text" class="search-input" id="parametro" name="parametro" placeholder="Id, marca o modelo" required>
+            </td>
+            <button type="submit" class="search-button">Buscar</button>
+        </form>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID Cliente</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                    <th>Rodado</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Fecha Egreso</th>
+                    <th>Editar / Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bicicleta : ${bicicletas}">
+                    <td th:text="${bicicleta.id}"></td>
+                    <td th:text="${bicicleta.idCliente}"></td>
+                    <td th:text="${bicicleta.marca}"></td>
+                    <td th:text="${bicicleta.modelo}"></td>
+                    <td th:text="${bicicleta.color}"></td>
+                    <td th:text="${bicicleta.rodado.valorAsociado}"></td>
+                    <td th:text="${bicicleta.fechaIngreso}"></td>
+                    <td th:text="${bicicleta.fechaEgreso}"></td>
+                    <td>
+                        <a th:href="@{/bicicleta/editar(id=${bicicleta.id})}" class="button edit">&#128221;</a>
+                        <a th:href="@{/bicicleta/eliminar(id=${bicicleta.id})}" class="button delete"
+                            onclick="return confirm('¿Estás seguro de que quieres eliminar esta bicicleta?');">&#10060;</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

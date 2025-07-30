@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Bicicleta</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container-edit">
+        <h1>Editar Bicicleta &#128221;</h1>
+        <p><a th:href="@{/bicicletas}" class="button back">Volver al Listado de Bicicletas</a></p>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <form th:action="@{/bicicleta/actualizar}" th:object="${bicicleta}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <div>
+                <label for="idCliente">Cliente:</label>
+                <select id="idCliente" th:field="*{idCliente}" required>
+                    <option value="">-- Seleccione un Cliente --</option>
+                    <option th:each="cliente : ${clientes}"
+                            th:value="${cliente.id}"
+                            th:text="|${cliente.id} - ${cliente.nombre} ${cliente.apellido}|">
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="marca">Marca:</label>
+                <input type="text" id="marca" maxlength="100" th:field="*{marca}" required>
+            </div>
+            <div>
+                <label for="modelo">Modelo:</label>
+                <input type="text" id="modelo" maxlength="100" th:field="*{modelo}" required>
+                </select>
+            </div>
+            <div>
+                <label for="color">Color:</label>
+                <input type="text" id="color" maxlength="50" th:field="*{color}" required>
+            </div>
+            <div>
+                <label for="rodado">Rodado:</label>
+                <select id="rodado" name="rodado" th:field="*{rodado}" required>
+                    <option value="">Todos los Rodados</option>
+                    <option th:each="rodado : ${T(com.alejomendez.java.actividad3.models.enums.Rodado).values()}"  
+                        th:value="${rodado}"
+                        th:text="${rodado.valorAsociado}">
+                    </option>
+                </select>    
+            </div>
+            <div>
+                <label for="fechaIngreso">Fecha Ingreso:</label>
+                <input type="date" id="fechaIngreso" th:field="*{fechaIngreso}" th:value="*{fechaIngreso}" required>
+            </div>
+            <div>
+                <label for="fechaEgreso">Fecha Egreso:</label>
+                <input type="date" id="fechaEgreso" th:field="*{fechaEgreso}">
+            </div>
+            <button type="submit" class="button">Actualizar Bicicleta</button>
+        </form>
+    </div>
+</body>
+</html>

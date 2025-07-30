@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alta de Presupuesto</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container-edit">
+        <h1>Alta de Nuevo Presupuesto</h1>
+        <p><a th:href="@{/}" class="button back">Volver al Listado de Presupuestos</a></p>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <form th:action="@{/presupuesto/guardar}" th:object="${presupuesto}" method="post" id="formPresupuestoAlta">
+            <div>
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" th:field="*{fecha}" th:value="*{fecha}" required>
+            </div>
+            <div>
+                <label for="clienteId">Cliente:</label>
+                <select id="clienteId" th:field="*{clienteId}" onchange="reloadWithCliente(this.value)" required>
+                    <option value="">-- Seleccione un Cliente --</option>
+                    <option th:each="cliente : ${clientes}"
+                            th:value="${cliente.id}"
+                            th:text="|${cliente.id} - ${cliente.nombre} ${cliente.apellido}|"
+                            th:selected="${cliente.id == presupuesto.clienteId}">
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="bicicletaId">Bicicleta:</label>
+                <select id="bicicletaId" th:field="*{bicicletaId}" required>
+                    <option value="">-- Seleccione una Bicicleta --</option>
+                    <option th:each="bicicleta : ${bicicletas}"
+                            th:value="${bicicleta.id}"
+                            th:text="|${bicicleta.id}.  ${bicicleta.marca} - ${bicicleta.modelo} - (${bicicleta.color})|"> <!--usa la sintaxis de literal substitution (|...|) para concatenar las propiedades y formar un texto legible para el usuario -->
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="valorTotal">Valor Total:</label>
+                <input type="number" id="valorTotal" th:field="*{valorTotal}" required>
+            </div>
+            <div>
+                <label for="detalle">Detalle:</label>
+                <input type="text" id="detalle" th:field="*{detalle}" maxlength="300">
+            </div>
+            <button type="submit" class="button">Guardar Presupuesto</button>
+        </form>
+        
+         <script th:inline="javascript">
+            /*<![CDATA[*/
+            function reloadWithCliente(clienteId) {
+                const form = document.getElementById('formPresupuestoAlta');
+                form.action = /*[[@{/presupuesto/alta?clienteId=}]]*/+ clienteId;
+                form.method = 'get';
+                form.submit();
+            }
+            /*]]>*/
+        </script>
+        <!-- El bloque de comentarios anterior le indica a Thymeleaf que el contenido que sigue debe tomarse tal cual como está, 
+         sin intentar convertirlo o validarlo como HTML. Gracias a eso, Thymeleaf puede buscar y reemplazar dentro del script 
+         las partes que llevan @{…} o ${…} sin alterar el resto del código JavaScript. -->
+    </div>
+</body>
+</html>
