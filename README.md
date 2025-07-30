@@ -30,7 +30,7 @@ Permite hacer un CRUD (create, read, update, delete) completo para presupuestos,
 ### Autor: Alejo Méndez
 
 > [!NOTE]
-> Proyecto en desarrollo
-> Es necesario setear las credenciales y la conexión para poder probarlo
+> Proyecto en desarrollo.
+> Es necesario setear las credenciales y la conexión para poder probarlo.
 
 
