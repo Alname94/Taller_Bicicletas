@@ -31,5 +31,6 @@ Permite hacer un CRUD (create, read, update, delete) completo para presupuestos,
 
 > [!NOTE]
 > Proyecto en desarrollo
+> Es necesario setear las credenciales y la conexión para poder probarlo
 
 
